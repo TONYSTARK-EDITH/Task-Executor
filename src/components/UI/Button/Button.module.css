@@ -1,0 +1,17 @@
+.task__btn {
+  color: var(--green);
+  display: flex;
+  gap: 1rem;
+  border-radius: 25rem;
+  width: 100px;
+  padding: 1rem;
+  background: transparent;
+  cursor: pointer;
+  justify-content: center;
+  border: 1px solid var(--green);
+  transition: 0.5s all ease-in-out;
+}
+
+.task__btn:hover {
+  box-shadow: rgba(38, 255, 5, 0.16) 0px 1px 4px, var(--green) 0px 0px 0px 3px;
+}

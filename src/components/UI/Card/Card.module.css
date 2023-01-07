@@ -1,0 +1,15 @@
+.task__card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 3rem;
+  width: var(--card-width) !important;
+  height: var(--card-height);
+  align-items: center;
+  box-shadow: rgba(38, 255, 5, 0.4) 0px 0px 0px 2px,
+    rgba(38, 255, 5, 0.65) 0px 4px 6px -1px,
+    rgba(38, 255, 5, 0.08) 0px 1px 0px inset;
+  border-top-left-radius: 100px;
+  border-bottom-right-radius: 100px;
+  justify-content: center;
+}

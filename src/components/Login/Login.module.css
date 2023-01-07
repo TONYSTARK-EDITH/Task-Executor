@@ -1,0 +1,22 @@
+.task__login {
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.task__line__btn {
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  height: fit-content;
+  width: fit-content;
+  color: red;
+  transition: 1s all ease-in-out;
+}
+
+.task__line__btn:hover {
+  border-bottom: 1px solid red !important;
+}
