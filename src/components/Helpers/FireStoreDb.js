@@ -11,6 +11,8 @@ import {
   deleteDoc,
   updateDoc,
 } from "firebase/firestore";
+
+import CryptoJS from "react-native-crypto-js";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import code from "./StatusCode";
@@ -20,17 +22,34 @@ class FireStoreDb {
   #firebaseConfig;
   #app;
   #auth;
+  #encrypt;
   constructor() {
+    this.#encrypt = CryptoJS.AES;
     this.#firebaseConfig = {
-      apiKey: "AIzaSyD02pGqU7-4cPCbyKyGWZU_667ywbQU-zc",
-      authDomain: "task-executor.firebaseapp.com",
-      databaseURL:
-        "https://task-executor-default-rt#db.asia-southeast1.firebasedatabase.app",
-      projectId: "task-executor",
-      storageBucket: "task-executor.appspot.com",
-      messagingSenderId: "151445124837",
-      appId: "1:151445124837:web:bbf9160ee280a8bebb860c",
-      measurementId: "G-CB0C2XG8JG",
+      apiKey: this.#encrypt
+        .decrypt(process.env.REACT_APP_ZERO, process.env.REACT_APP_ONE)
+        .toString(CryptoJS.enc.Utf8),
+      authDomain: this.#encrypt
+        .decrypt(process.env.REACT_APP_TWO, process.env.REACT_APP_THREE)
+        .toString(CryptoJS.enc.Utf8),
+      databaseURL: this.#encrypt
+        .decrypt(process.env.REACT_APP_FOUR, process.env.REACT_APP_FIVE)
+        .toString(CryptoJS.enc.Utf8),
+      projectId: this.#encrypt
+        .decrypt(process.env.REACT_APP_SIX, process.env.REACT_APP_SEVEN)
+        .toString(CryptoJS.enc.Utf8),
+      storageBucket: this.#encrypt
+        .decrypt(process.env.REACT_APP_EIGHT, process.env.REACT_APP_NINE)
+        .toString(CryptoJS.enc.Utf8),
+      messagingSenderId: this.#encrypt
+        .decrypt(process.env.REACT_APP_TEN, process.env.REACT_APP_ELEVEN)
+        .toString(CryptoJS.enc.Utf8),
+      appId: this.#encrypt
+        .decrypt(process.env.REACT_APP_TWELVE, process.env.REACT_APP_THIRTEEN)
+        .toString(CryptoJS.enc.Utf8),
+      measurementId: this.#encrypt
+        .decrypt(process.env.REACT_APP_FOURTEEN, process.env.REACT_APP_FIFTEEN)
+        .toString(CryptoJS.enc.Utf8),
     };
     this.#app = initializeApp(this.#firebaseConfig);
     this.#auth = getAuth(this.#app);

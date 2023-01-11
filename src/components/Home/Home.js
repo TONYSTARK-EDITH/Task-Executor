@@ -50,7 +50,6 @@ const Home = (props) => {
 
   const retriveStudents = useCallback(async () => {
     if (newTask) {
-      console.log("Running retriveStudents");
       const data = await db.getAllStudents("username");
       setStudents(data);
     }
@@ -58,7 +57,6 @@ const Home = (props) => {
 
   const retriveTask = useCallback(async () => {
     if (!newTask) {
-      console.log("Running retriveTask");
       const data = await db.getTasks(
         isMaster ? code.MASTER : code.STUDENT,
         email
