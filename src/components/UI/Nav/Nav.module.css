@@ -16,8 +16,14 @@
   justify-content: space-between;
   padding: 2rem;
   align-items: center;
+  gap: 1rem;
 }
 
 .task__nav__fields p {
+  margin-right: auto;
   font-size: larger;
+}
+
+.task__nav__img {
+  border-radius: 50%;
 }

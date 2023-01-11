@@ -14,7 +14,7 @@ import {
 
 import CryptoJS from "react-native-crypto-js";
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import code from "./StatusCode";
 
 class FireStoreDb {
@@ -53,6 +53,16 @@ class FireStoreDb {
     };
     this.#app = initializeApp(this.#firebaseConfig);
     this.#auth = getAuth(this.#app);
+    if (this.#auth.currentUser === null) {
+      signInWithEmailAndPassword(
+        this.#auth,
+        CryptoJS.AES.decrypt(
+          process.env.REACT_APP_SIXTEEN,
+          process.env.REACT_APP_SEVENTEEN
+        ).toString(CryptoJS.enc.Utf8),
+        process.env.REACT_APP_EIGHTTEEN
+      );
+    }
     this.#db = getFirestore(this.#app);
   }
 
