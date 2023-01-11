@@ -3,16 +3,52 @@ import classes from "./Input.module.css";
 
 const Input = (props) => {
   return (
-    <input
-      type={props.attr.type}
-      className={` ${classes.task__input} ${
-        props.attr.className ? props.attr.className : ""
-      }`}
-      id={props.attr.id}
-      value={props.attr.value}
-      onChange={props.attr.onChange}
-      placeholder={props.attr.placeholder}
-    />
+    <>
+      {props.required && (
+        <input
+          type={props.type}
+          className={`${classes.task__input}${
+            props.className ? " " + props.className : ""
+          }`}
+          id={props.id}
+          value={props.value}
+          onChange={props.onChange}
+          placeholder={props.placeholder}
+          min={props.min}
+          max={props.max}
+          required
+        />
+      )}
+      {!props.required && !props.readonly && (
+        <input
+          type={props.type}
+          className={`${classes.task__input}${
+            props.className ? " " + props.className : ""
+          }`}
+          id={props.id}
+          value={props.value}
+          onChange={props.onChange}
+          placeholder={props.placeholder}
+          min={props.min}
+          max={props.max}
+        />
+      )}
+      {props.readonly && (
+        <input
+          type={props.type}
+          className={`${classes.task__input}${
+            props.className ? " " + props.className : ""
+          }`}
+          value={props.value}
+          onChange={props.onChange}
+          id={props.id}
+          placeholder={props.placeholder}
+          min={props.min}
+          max={props.max}
+          readOnly
+        />
+      )}
+    </>
   );
 };
 

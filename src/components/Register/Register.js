@@ -4,11 +4,20 @@ import Button from "../UI/Button/Button";
 import Card from "../UI/Card/Card";
 import Input from "../UI/Input/Input";
 import FormField from "../UI/FormField/FormField";
+import Form from "../UI/Form/Form";
 
 const Register = (props) => {
+  const [name, setName] = useState("");
+
   const [userName, setUserName] = useState("");
 
   const [passWord, setPassWord] = useState("");
+
+  const [isMaster, setIsMaster] = useState(false);
+
+  const nameChangeHandler = (e) => {
+    setName(e.target.value);
+  };
 
   const userNameChangeHandler = (e) => {
     setUserName(e.target.value);
@@ -18,28 +27,13 @@ const Register = (props) => {
     setPassWord(e.target.value);
   };
 
-  const userNameProps = {
-    id: "username",
-    type: "email",
-    value: userName,
-    onChange: userNameChangeHandler,
-    placeholder: "Username",
+  const isMasterChangeHandler = (e) => {
+    setIsMaster(e.target.checked);
   };
 
-  const passWordProps = {
-    id: "password",
-
-    type: "password",
-    value: passWord,
-    onChange: passWordChangeHandler,
-    placeholder: "Password",
-  };
-
-  const masterOrStudentProps = {
-    className: classes.task__checkbox,
-    id: "checkbox",
-    type: "checkbox",
-    value: "Master",
+  const register = (e) => {
+    e.preventDefault();
+    props.onRegister(name, userName, passWord, isMaster);
   };
 
   const onRegisterProps = {
@@ -49,30 +43,62 @@ const Register = (props) => {
   };
   const onSubmitProps = {
     type: "submit",
-    onClick: () => {},
   };
 
   return (
     <div className={classes.task__register}>
-      <Card>
-        <FormField>
-          <Input attr={userNameProps} />
-        </FormField>
-        <FormField>
-          <Input attr={passWordProps} />
-        </FormField>
-        <FormField>
-          <Input attr={masterOrStudentProps} />
-          <label htmlFor="checkbox">Master</label>
-        </FormField>
-        <FormField>
-          <span>
-            Already a user ? <Button attr={onRegisterProps}>Login</Button>
-          </span>
-        </FormField>
-        <FormField>
-          <Button attr={onSubmitProps}>Register</Button>
-        </FormField>
+      <Card className={classes.task__reg__card}>
+        <Form onSubmit={register}>
+          <FormField>
+            <Input
+              id="name"
+              type="text"
+              value={name}
+              onChange={nameChangeHandler}
+              placeholder="Name"
+              required={true}
+            />
+          </FormField>
+          <FormField>
+            <Input
+              id="username"
+              type="email"
+              value={userName}
+              onChange={userNameChangeHandler}
+              placeholder="Username"
+              required={true}
+            />
+          </FormField>
+          <FormField>
+            <Input
+              id="password"
+              type="password"
+              value={passWord}
+              onChange={passWordChangeHandler}
+              placeholder="Password"
+              required={true}
+            />
+          </FormField>
+          <FormField>
+            <Input
+              className={classes.task__checkbox}
+              id="checkbox"
+              type="checkbox"
+              value={isMaster}
+              onChange={isMasterChangeHandler}
+              required={false}
+            />
+            <label htmlFor="checkbox">Master</label>
+          </FormField>
+          <FormField>
+            <span>
+              Already a user ? <Button attr={onRegisterProps}>Login</Button>
+            </span>
+          </FormField>
+          <FormField>
+            <Button attr={onSubmitProps}>Register</Button>
+          </FormField>
+        </Form>
       </Card>
     </div>
   );

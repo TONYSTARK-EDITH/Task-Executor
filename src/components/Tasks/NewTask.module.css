@@ -1,0 +1,40 @@
+.task__card__overlay {
+  position: fixed;
+  width: 60% !important;
+  background: var(--black);
+  z-index: 5;
+  justify-self: center;
+  font-size: 1.5rem;
+}
+
+select {
+  width: max-content;
+  padding: 1rem;
+  border: 1px solid var(--green);
+  background-color: var(--black);
+  color: var(--green);
+  border-radius: 25rem;
+}
+select:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+select:focus {
+  outline: none;
+}
+
+.task__cancel__btn {
+  color: red;
+  border: 1px solid red;
+}
+
+.task__cancel__btn:hover {
+  box-shadow: rgba(255, 5, 5, 0.16) 0px 1px 4px, red 0px 0px 0px 3px;
+}

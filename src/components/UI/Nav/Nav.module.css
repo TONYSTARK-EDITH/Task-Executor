@@ -1,0 +1,23 @@
+.task__nav {
+  position: fixed;
+  display: flex;
+  z-index: 4;
+  height: 100px;
+  width: 100vw;
+  background-color: var(--black);
+  color: var(--green);
+  box-shadow: rgb(0 0 0 / 19%) 0px 10px 20px, rgb(0 0 0 / 23%) 0px 6px 6px;
+}
+
+.task__nav__fields {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 2rem;
+  align-items: center;
+}
+
+.task__nav__fields p {
+  font-size: larger;
+}

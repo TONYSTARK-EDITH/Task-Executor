@@ -17,12 +17,20 @@ class TaskExecutor {
       "*": "multiply",
       "/": "dividedBy",
     };
+    this.opsMath = {
+      add: "+",
+      subtract: "-",
+      multiply: "*",
+      dividedBy: "/",
+    };
     this.#generateFunction();
   }
 
   #generateFunction() {
     Object.entries(this.numbersObj).forEach((e) => {
-      TaskExecutor.prototype[e[1]] = (ops = null) => eval(+e[0] + ops);
+      TaskExecutor.prototype[e[1]] = (ops = null) =>
+        // eslint-disable-next-line no-eval
+        Math.floor(eval(+e[0] + ops));
     });
 
     Object.entries(this.mathOps).forEach((e) => {

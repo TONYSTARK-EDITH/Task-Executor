@@ -1,0 +1,39 @@
+.task__master {
+  position: relative;
+  top: 100px;
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+  width: 75%;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.task__master__header {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1.5px solid var(--green);
+}
+.task__master__btn {
+  width: 50px;
+  height: 50px;
+  font-size: 2rem;
+  padding: 0;
+  align-items: center;
+}
+.task__master__refresh {
+  margin-left: auto;
+  font-size: 1.5rem;
+  color: red;
+}
+
+.task__show {
+  display: flex;
+}
+.task__hide {
+  display: none;
+}

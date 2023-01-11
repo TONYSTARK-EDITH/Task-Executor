@@ -6,7 +6,7 @@ const Button = (props) => {
       type={props.attr.type}
       className={`${
         props.attr.className ? props.attr.className : classes.task__btn
-      }`}
+      } ${props.className}`}
       onClick={props.attr.onClick}
     >
       {props.children}

@@ -28,3 +28,17 @@
 .task__check__field {
   align-self: flex-start;
 }
+.task__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.task__reg__card {
+  border-radius: 132px 0px 123px 0px !important;
+  -moz-border-radius: 132px 0px 123px 0px !important;
+  -webkit-border-radius: 132px 0px 123px 0px !important;
+  border: 11px outset var(--green) !important;
+}

@@ -1,43 +1,102 @@
 import "./App.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
 import { ToastContainer, toast } from "react-toastify";
-import { getApps } from "firebase/app";
+import db from "./components/Helpers/FireStoreDb";
+import code from "./components/Helpers/StatusCode";
 import "react-toastify/dist/ReactToastify.css";
-import s from "./components/Helpers/TaskExecutor";
+import Home from "./components/Home/Home";
 
 const App = () => {
+  const [email, setEmail] = useState("");
+
+  const [name, setName] = useState("");
+
   const [loginUI, setLoginUI] = useState(true);
 
-  const toastProps = {
-    position: "bottom-center",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: false,
-    pauseOnHover: false,
-    draggable: true,
-    progress: undefined,
-    theme: "dark",
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const [isMaster, setIsMaster] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem(code.LOGGED_IN) === "1") {
+      setIsLoggedIn(true);
+      setName(localStorage.getItem(code.NAME));
+      setEmail(localStorage.getItem(code.EMAIL));
+      if (localStorage.getItem(code.MASTER) === "1") {
+        setIsMaster(true);
+      }
+    }
+  }, [isLoggedIn, isMaster]);
+
+  const login = async (userName, passWord) => {
+    const [statusCode, data] = await db.getUser(userName);
+    if (statusCode === code.EMPTY_DOC) {
+      toast.error(`${userName} is not registered`);
+    } else {
+      if (passWord === data.password) {
+        setIsLoggedIn(true);
+        localStorage.setItem(code.LOGGED_IN, "1");
+        localStorage.setItem(code.NAME, data.name);
+        localStorage.setItem(code.EMAIL, data.username);
+        setName(data.name);
+        setEmail(data.username);
+        if (data.ismaster) {
+          setIsMaster(true);
+          localStorage.setItem(code.MASTER, "1");
+        }
+      } else {
+        toast.error("Password is incorrect");
+      }
+    }
   };
-  console.log(s.one(s.add(s.two())));
+
+  const register = async (name, userName, passWord, isMaster) => {
+    const [statusCode, error] = await db.addUsers(
+      name,
+      userName,
+      passWord,
+      isMaster
+    );
+    if (statusCode === code.SUCCESS) {
+      toast.success("User registered successfully");
+    } else if (statusCode === code.USER_EXISTS) {
+      toast.warn(`${userName} already exists`);
+    } else {
+      toast.error(error);
+    }
+  };
+
+  const logout = () => {
+    setIsLoggedIn(false);
+    setIsMaster(false);
+    localStorage.removeItem(code.LOGGED_IN);
+    localStorage.removeItem(code.MASTER);
+    localStorage.removeItem(code.NAME);
+    localStorage.removeItem(code.EMAIL);
+  };
+
   const loginUiChangeHandler = () => {
-    getApps().forEach((e) => {
-      console.log(e._options);
-    });
-    toast.success("Login", toastProps);
     setLoginUI(false);
   };
 
   const registerUiChangeHandler = () => {
-    toast.success("Register", toastProps);
     setLoginUI(true);
   };
 
   return (
     <>
-      {loginUI && <Login onChange={loginUiChangeHandler} />}
-      {!loginUI && <Register onChange={registerUiChangeHandler} />}
+      {loginUI && !isLoggedIn && (
+        <Login onChange={loginUiChangeHandler} onLogin={login} />
+      )}
+      {!loginUI && !isLoggedIn && (
+        <Register onChange={registerUiChangeHandler} onRegister={register} />
+      )}
+
+      {isLoggedIn && (
+        <Home isMaster={isMaster} email={email} name={name} logout={logout} />
+      )}
 
       <ToastContainer
         position="bottom-center"
