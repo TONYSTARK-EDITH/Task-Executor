@@ -24,6 +24,7 @@
   font-size: 2rem;
   padding: 0;
   align-items: center;
+  border: none;
 }
 .task__master__refresh {
   margin-left: auto;
@@ -36,4 +37,23 @@
 }
 .task__hide {
   display: none;
+}
+
+@media (max-width: 530px) {
+  .task__master {
+    width: 100%;
+    margin: 1rem 0;
+  }
+}
+
+@media (max-width: 350px) {
+  .task__master__header h2 {
+    font-size: medium;
+  }
+}
+
+@media (max-width: 275px) {
+  .task__master__header h2 {
+    font-size: small;
+  }
 }

@@ -141,7 +141,13 @@ const Home = (props) => {
           <h2>Assigned Tasks</h2>
           <Button
             className={`${classes.task__master__btn} ${classes.task__master__refresh}`}
-            attr={{ ...btnProps, onClick: retriveTask }}
+            attr={{
+              ...btnProps,
+              onClick: () => {
+                retriveTask();
+                toast.info("Refreshed");
+              },
+            }}
           >
             <FiRefreshCw></FiRefreshCw>
           </Button>

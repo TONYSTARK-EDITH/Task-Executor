@@ -2,8 +2,7 @@ import React from "react";
 import Button from "../Button/Button";
 import classes from "./Nav.module.css";
 import code from "../../Helpers/StatusCode";
-import logo from "./icon.png";
-
+import { MdLogout } from "react-icons/md";
 const Nav = (props) => {
   const buttonProps = {
     type: "button",
@@ -16,7 +15,7 @@ const Nav = (props) => {
           className={classes.task__nav__img}
           width="50"
           height="50"
-          src={logo}
+          src="./icon.png"
           alt="LOGO"
         ></img>
         <p>
@@ -26,7 +25,12 @@ const Nav = (props) => {
             : code.STUDENT.toUpperCase()}
           )
         </p>
-        <Button attr={buttonProps}>Logout</Button>
+        <Button className={classes.task__btn} attr={buttonProps}>
+          Logout
+        </Button>
+        <Button className={classes.task__media__btn} attr={buttonProps}>
+          <MdLogout></MdLogout>
+        </Button>
       </div>
     </nav>
   );

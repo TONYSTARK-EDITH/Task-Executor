@@ -2,6 +2,8 @@
   flex-direction: row;
   width: 100%;
 }
+
+
 .task__obj__form > :first-child {
   margin-left: auto;
 }
@@ -12,7 +14,7 @@
   gap: 1rem;
   cursor: pointer;
   padding: 0.5rem 0;
-  margin: 1rem 0;
+  margin: 1rem;
   border-radius: 16px;
   border: 5px outset var(--green);
 }
@@ -66,4 +68,19 @@
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   display: none;
+}
+
+@media (max-width: 580px) {
+  .task__obj__form {
+    gap: 0.5rem;
+  }
+  .task__obj__input {
+    width: 10px;
+  }
+}
+
+@media (max-width: 280px) {
+  .task__obj__form {
+    gap: 0.2rem;
+  }
 }

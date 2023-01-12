@@ -27,3 +27,37 @@
 .task__nav__img {
   border-radius: 50%;
 }
+.task__btn {
+  display: flex;
+}
+.task__media__btn {
+  display: none;
+  width: 50px;
+  height: 50px;
+  color: red;
+  font-size: 2rem;
+  padding: 0;
+  align-items: center;
+  border: none;
+}
+
+@media (max-width: 500px) {
+  .task__nav__fields p {
+    font-size: large;
+  }
+  .task__nav__fields {
+    padding: 2rem 0;
+  }
+}
+
+@media (max-width: 400px) {
+  .task__nav__fields p {
+    font-size: small;
+  }
+  .task__btn {
+    display: none;
+  }
+  .task__media__btn {
+    display: flex;
+  }
+}

@@ -32,8 +32,8 @@ const NewTask = (props) => {
       {ReactDOM.createPortal(
         <Card className={classes.task__card__overlay}>
           <Form onSubmit={addNewTask}>
-            <FormField>
-              <label htmlFor="students">Assign To : </label>
+            <FormField className={classes.task__form__field}>
+              <label htmlFor="students">Assign To</label>
               <select name="students" id="students">
                 <option value="ALL">ALL</option>
                 {props.students.map((e) => (
@@ -43,8 +43,8 @@ const NewTask = (props) => {
                 ))}
               </select>
             </FormField>
-            <FormField>
-              <label htmlFor="ops">Assign Operation : </label>
+            <FormField className={classes.task__form__field}>
+              <label htmlFor="ops">Assign Operation</label>
               <select name="ops" id="ops">
                 {Object.values(task.mathOps).map((e) => (
                   <option key={e} value={e}>
@@ -53,11 +53,11 @@ const NewTask = (props) => {
                 ))}
               </select>
             </FormField>
-            <FormField>
+            <FormField className={classes.task__form__field}>
               <Button className={classes.task__cancel__btn} attr={cancelProps}>
                 Cancel
               </Button>
-              <Button attr={assignProps}>Assign</Button>
+              <Button  attr={assignProps}>Assign</Button>
             </FormField>
           </Form>
         </Card>,
