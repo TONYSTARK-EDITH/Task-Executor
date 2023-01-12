@@ -71,6 +71,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### `npm i`
+
+Installs all the dependancies this project uses and after installing its good to run it locally
+
 ### `npm start`
 
 Runs the app in the development mode.\
