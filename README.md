@@ -27,19 +27,19 @@ eight(divided_by(three()));
 
 ## **TaskExecutor**
 
-    This class has the function from numbers 1 to 9 and all the basic arithmetic operation functions.Only the singleton object will be exported and this class will be executed only once on the whole session
+This class has the function from numbers 1 to 9 and all the basic arithmetic operation functions.Only the singleton object will be exported and this class will be executed only once on the whole session
 
 ### **#generateFunction()**
 
-    This function is a private function in the TaskExecutor class which generates the functions from 1 to 9 and mathematical operators function This function will be executed when a object is created
+This function is a private function in the TaskExecutor class which generates the functions from 1 to 9 and mathematical operators function This function will be executed when a object is created
 
 #### **The Numbers Function logic**
 
-    It has an optional argument by default it would be null the function returns the floor division of the evaluated expr of respective number and the argument
+It has an optional argument by default it would be null the function returns the floor division of the evaluated expr of respective number and the argument
 
 #### **The Basic Arithmetic Operators Function Logic**
 
-    It has an argument operand it is an mandatory argument the function returns a concatenated string of the respective operator and the argument
+It has an argument operand it is an mandatory argument the function returns a concatenated string of the respective operator and the argument
 
 #### **How It Works**
 
