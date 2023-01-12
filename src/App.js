@@ -7,17 +7,15 @@ import db from "./components/Helpers/FireStoreDb";
 import code from "./components/Helpers/StatusCode";
 import "react-toastify/dist/ReactToastify.css";
 import Home from "./components/Home/Home";
+import { Dna } from "react-loader-spinner";
 
 const App = () => {
   const [email, setEmail] = useState("");
-
   const [name, setName] = useState("");
-
   const [loginUI, setLoginUI] = useState(true);
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const [isMaster, setIsMaster] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (localStorage.getItem(code.LOGGED_IN) === "1") {
@@ -28,11 +26,16 @@ const App = () => {
           setEmail(localStorage.getItem(code.EMAIL));
           if (localStorage.getItem(code.MASTER) === "1") {
             setIsMaster(true);
-          } else {
-            logout();
           }
+        } else {
+          logout();
         }
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
       });
+    } else {
+      setLoading(false);
     }
   }, [isLoggedIn, isMaster]);
 
@@ -101,14 +104,24 @@ const App = () => {
 
   return (
     <>
-      {loginUI && !isLoggedIn && (
+      {loading && (
+        <div className="task__loader">
+          <Dna
+            visible={loading}
+            height="80"
+            width="80"
+            ariaLabel="dna-loading"
+          />
+        </div>
+      )}
+      {loginUI && !isLoggedIn && !loading && (
         <Login onChange={loginUiChangeHandler} onLogin={login} />
       )}
-      {!loginUI && !isLoggedIn && (
+      {!loginUI && !isLoggedIn && !loading && (
         <Register onChange={registerUiChangeHandler} onRegister={register} />
       )}
 
-      {isLoggedIn && (
+      {isLoggedIn && !loading && (
         <Home isMaster={isMaster} email={email} name={name} logout={logout} />
       )}
 

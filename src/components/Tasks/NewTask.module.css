@@ -27,11 +27,15 @@
     width: 100px !important;
   }
   .task__form__field {
-    justify-content: space-between;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
   }
 }
 
 select {
+  width: -webkit-max-content;
+  width: -moz-max-content;
   width: max-content;
   padding: 1rem;
   border: 1px solid var(--green);
@@ -60,5 +64,6 @@ select:focus {
 }
 
 .task__cancel__btn:hover {
-  box-shadow: rgba(255, 5, 5, 0.16) 0px 1px 4px, red 0px 0px 0px 3px;
+  -webkit-box-shadow: rgba(255, 5, 5, 0.16) 0px 1px 4px, red 0px 0px 0px 3px;
+          box-shadow: rgba(255, 5, 5, 0.16) 0px 1px 4px, red 0px 0px 0px 3px;
 }

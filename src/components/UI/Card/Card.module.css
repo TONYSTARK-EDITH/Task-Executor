@@ -1,15 +1,26 @@
 .task__card {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
   gap: 1.5rem;
   padding: 3rem;
   width: var(--card-width) !important;
   height: var(--card-height);
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   border-radius: 0px 132px 0px 123px;
   -moz-border-radius: 0px 132px 0px 123px;
   -webkit-border-radius: 0px 132px 0px 123px;
   border: 11px outset var(--green);
+
+  -webkit-box-pack: center;
+
+  -ms-flex-pack: center;
 
   justify-content: center;
 }

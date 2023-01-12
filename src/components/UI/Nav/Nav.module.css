@@ -1,20 +1,33 @@
 .task__nav {
   position: fixed;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   z-index: 4;
   height: 100px;
   width: 100vw;
   background-color: var(--black);
   color: var(--green);
+  -webkit-box-shadow: rgb(0 0 0 / 19%) 0px 10px 20px,
+    rgb(0 0 0 / 23%) 0px 6px 6px;
   box-shadow: rgb(0 0 0 / 19%) 0px 10px 20px, rgb(0 0 0 / 23%) 0px 6px 6px;
 }
 
 .task__nav__fields {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   width: 100%;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
   flex-direction: row;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 2rem;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   gap: 1rem;
 }
@@ -28,6 +41,8 @@
   border-radius: 50%;
 }
 .task__btn {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
 }
 .task__media__btn {
@@ -37,6 +52,8 @@
   color: red;
   font-size: 2rem;
   padding: 0;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   border: none;
 }
@@ -58,6 +75,8 @@
     display: none;
   }
   .task__media__btn {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
   }
 }
