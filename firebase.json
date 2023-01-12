@@ -4,9 +4,12 @@
     "indexes": "firestore.indexes.json"
   },
   "hosting": {
-    "site": "taskexecutor",
     "public": "build",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
     "rewrites": [
       {
         "source": "**",

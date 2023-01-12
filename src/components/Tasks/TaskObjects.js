@@ -66,7 +66,7 @@ const TaskObjects = (props) => {
   return (
     <div className={classes.task__obj}>
       <div className={classes.task__obj__header} onClick={expandChangeHandler}>
-        <span>{props.name} {  }</span>
+        <span>{props.name}</span>
         <Button attr={expandProps}>
           {!isExpanded && <BiChevronsDown></BiChevronsDown>}
           {isExpanded && <BiChevronsUp></BiChevronsUp>}
@@ -84,7 +84,7 @@ const TaskObjects = (props) => {
             <Input
               id="a"
               type="number"
-              value={a ? a : ""}
+              value={a !== null ? a : ""}
               onChange={aChangeHandler}
               className={classes.task__obj__input}
               placeholder="A"
@@ -101,7 +101,7 @@ const TaskObjects = (props) => {
             <Input
               id="b"
               type="number"
-              value={b ? b : ""}
+              value={b !== null ? b : ""}
               onChange={bChangeHandler}
               className={classes.task__obj__input}
               placeholder="B"
@@ -118,12 +118,10 @@ const TaskObjects = (props) => {
             <Input
               id="c"
               type="number"
-              value={c ? c : ""}
+              value={c !== null ? c : ""}
               onChange={() => {}}
               className={classes.task__obj__input}
               placeholder="C"
-              min={1}
-              max={9}
               readonly={true}
               required={false}
             />

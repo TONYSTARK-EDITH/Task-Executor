@@ -11,7 +11,6 @@ import {
   updateDoc,
   writeBatch,
 } from "firebase/firestore";
-
 import CryptoJS from "react-native-crypto-js";
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -39,28 +38,25 @@ class FireStoreDb {
     this.#encrypt = CryptoJS.AES;
     this.#firebaseConfig = {
       apiKey: this.#encrypt
-        .decrypt(process.env.REACT_APP_ZERO, process.env.REACT_APP_ONE)
+        .decrypt(process.env.REACT_APP_2, process.env.REACT_APP_1)
         .toString(CryptoJS.enc.Utf8),
       authDomain: this.#encrypt
-        .decrypt(process.env.REACT_APP_TWO, process.env.REACT_APP_THREE)
-        .toString(CryptoJS.enc.Utf8),
-      databaseURL: this.#encrypt
-        .decrypt(process.env.REACT_APP_FOUR, process.env.REACT_APP_FIVE)
+        .decrypt(process.env.REACT_APP_4, process.env.REACT_APP_3)
         .toString(CryptoJS.enc.Utf8),
       projectId: this.#encrypt
-        .decrypt(process.env.REACT_APP_SIX, process.env.REACT_APP_SEVEN)
+        .decrypt(process.env.REACT_APP_6, process.env.REACT_APP_5)
         .toString(CryptoJS.enc.Utf8),
       storageBucket: this.#encrypt
-        .decrypt(process.env.REACT_APP_EIGHT, process.env.REACT_APP_NINE)
+        .decrypt(process.env.REACT_APP_8, process.env.REACT_APP_7)
         .toString(CryptoJS.enc.Utf8),
       messagingSenderId: this.#encrypt
-        .decrypt(process.env.REACT_APP_TEN, process.env.REACT_APP_ELEVEN)
+        .decrypt(process.env.REACT_APP_10, process.env.REACT_APP_9)
         .toString(CryptoJS.enc.Utf8),
       appId: this.#encrypt
-        .decrypt(process.env.REACT_APP_TWELVE, process.env.REACT_APP_THIRTEEN)
+        .decrypt(process.env.REACT_APP_12, process.env.REACT_APP_11)
         .toString(CryptoJS.enc.Utf8),
       measurementId: this.#encrypt
-        .decrypt(process.env.REACT_APP_FOURTEEN, process.env.REACT_APP_FIFTEEN)
+        .decrypt(process.env.REACT_APP_14, process.env.REACT_APP_13)
         .toString(CryptoJS.enc.Utf8),
     };
     this.#app = initializeApp(this.#firebaseConfig);
@@ -68,11 +64,10 @@ class FireStoreDb {
     if (this.#auth.currentUser === null) {
       signInWithEmailAndPassword(
         this.#auth,
-        CryptoJS.AES.decrypt(
-          process.env.REACT_APP_SIXTEEN,
-          process.env.REACT_APP_SEVENTEEN
-        ).toString(CryptoJS.enc.Utf8),
-        process.env.REACT_APP_EIGHTTEEN
+        this.#encrypt
+          .decrypt(process.env.REACT_APP_16, process.env.REACT_APP_15)
+          .toString(CryptoJS.enc.Utf8),
+        process.env.REACT_APP_17
       );
     }
     this.#db = getFirestore(this.#app);
