@@ -40,6 +40,9 @@ const Home = (props) => {
       if (statusCode === code.SUCCESS) {
         toast.success("Tasks added");
         deleteNewTask();
+      } else if (statusCode === code.NO_INTERNET_CONNECTIONS) {
+        toast.error("No Internet Connections");
+        deleteNewTask();
       } else {
         toast.error(msg);
         deleteNewTask();
@@ -50,40 +53,59 @@ const Home = (props) => {
 
   const retriveStudents = useCallback(async () => {
     if (newTask) {
-      const data = await db.getAllStudents("username");
-      setStudents(data);
+      if (window.navigator.onLine) {
+        const data = await db.getStudents("username");
+        setStudents(data);
+      } else {
+        toast.error("No Internet Connection");
+      }
     }
   }, [newTask]);
 
   const retriveTask = useCallback(async () => {
     if (!newTask) {
-      const data = await db.getTasks(
-        isMaster ? code.MASTER : code.STUDENT,
-        email
-      );
-      setTaskObjs(data);
+      if (window.navigator.onLine) {
+        const data = await db.getTasks(
+          isMaster ? code.MASTER : code.STUDENT,
+          email
+        );
+        setTaskObjs(data);
+      } else {
+        toast.error("No Internet Connection");
+      }
     }
   }, [newTask, isMaster, email]);
 
   const deleteTask = useCallback(
     async (id) => {
-      const [statusCode, msg] = await db.deleteTask(id);
-      if (statusCode === code.SUCCESS) {
-        toast.success("Task deleted successfully");
-        retriveTask();
+      if (window.navigator.onLine) {
+        const [statusCode, msg] = await db.deleteTask(id);
+        if (statusCode === code.SUCCESS) {
+          toast.success("Task deleted successfully");
+          retriveTask();
+        } else if (statusCode === code.NO_INTERNET_CONNECTIONS) {
+          toast.error("No Internet Connections");
+          return;
+        } else {
+          toast.error(msg);
+        }
       } else {
-        toast.error(msg);
+        toast.error("No Internet Connection");
       }
     },
     [retriveTask]
   );
 
   const updateTask = useCallback(async (id, lop, rop, ans) => {
-    const [statusCode, msg] = await db.updateTask(id, lop, rop, ans);
-    if (statusCode === code.SUCCESS) {
-      toast.success("Task completed successfully");
+    if (window.navigator.onLine) {
+      const [statusCode, msg] = await db.updateTask(id, lop, rop, ans);
+      if (statusCode === code.SUCCESS) {
+        toast.success("Task completed successfully");
+      } else {
+        toast.error(msg);
+      }
     } else {
-      toast.error(msg);
+      toast.error("No Internet Connection");
     }
   }, []);
 

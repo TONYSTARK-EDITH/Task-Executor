@@ -34,6 +34,8 @@ const App = () => {
     const [statusCode, data] = await db.getUser(userName);
     if (statusCode === code.EMPTY_DOC) {
       toast.error(`${userName} is not registered`);
+    } else if (statusCode === code.NO_INTERNET_CONNECTIONS) {
+      toast.error("No Internet Connections");
     } else {
       if (passWord === data.password) {
         setIsLoggedIn(true);
@@ -63,6 +65,8 @@ const App = () => {
       toast.success("User registered successfully");
     } else if (statusCode === code.USER_EXISTS) {
       toast.warn(`${userName} already exists`);
+    } else if (statusCode === code.NO_INTERNET_CONNECTIONS) {
+      toast.error("No Internet Connections");
     } else {
       toast.error(error);
     }
@@ -100,12 +104,13 @@ const App = () => {
 
       <ToastContainer
         position="bottom-center"
-        autoClose={5000}
+        autoClose={3000}
+        limit={1}
         hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick={false}
+        newestOnTop
+        closeOnClick
         rtl={false}
-        pauseOnFocusLoss={false}
+        pauseOnFocusLoss
         draggable
         pauseOnHover={false}
         theme="dark"

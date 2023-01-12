@@ -7,9 +7,9 @@ import {
   where,
   query,
   getDocs,
-  addDoc,
   deleteDoc,
   updateDoc,
+  writeBatch,
 } from "firebase/firestore";
 
 import CryptoJS from "react-native-crypto-js";
@@ -17,6 +17,18 @@ import { initializeApp } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import code from "./StatusCode";
 
+/**
+ * FIRESTOREDB
+ *
+ * * Initialize firebase and start a firestore db instance
+ * * Contains all the methods for collections
+ *
+ * @param db Firestore Database Object
+ * @param firebaseConfig Firebase configuration object
+ * @param app Firebase app object
+ * @param auth Firebase Authentication object
+ * @param encrypt CryptoJS Encryption Method
+ */
 class FireStoreDb {
   #db;
   #firebaseConfig;
@@ -66,63 +78,139 @@ class FireStoreDb {
     this.#db = getFirestore(this.#app);
   }
 
-  async getAllStudents(field = "ALL") {
-    const userRef = collection(this.#db, code.USER);
-    const studQuery = query(userRef, where("ismaster", "==", false));
-    const studQuerySnap = await getDocs(studQuery);
-    let studArr = [];
-    studQuerySnap.forEach((students) => {
-      if (field === "ALL") studArr.push(students.data());
-      else studArr.push(students.data()[field]);
-    });
-    return studArr;
+  /**
+   * getStudents
+   *
+   * * If field is set to all Returns an array of all the users who is students
+   * * else it returns an array of all the users who is student with a particular field
+   *
+   * @param {String} field
+   * @returns {Array} studArr
+   */
+  async getStudents(field = "ALL") {
+    try {
+      const userRef = collection(this.#db, code.USER);
+      const studQuery = query(userRef, where("ismaster", "==", false));
+      const studQuerySnap = await getDocs(studQuery);
+      let studArr = [];
+      studQuerySnap.forEach((students) => {
+        if (field === "ALL") studArr.push(students.data());
+        else studArr.push(students.data()[field]);
+      });
+      return studArr;
+    } catch (e) {
+      return code.NO_INTERNET_CONNECTIONS;
+    }
   }
+
+  /**
+   * getUser
+   *
+   * * Returns an array of two elements containing status code and data
+   * * If there is no error in executing the function then the data would the user details
+   * * else the data would be the error message
+   *
+   * @param {String} id
+   * @returns {Array} [statusCode, data]
+   */
 
   async getUser(id) {
-    let docRef;
-    if (id) {
-      docRef = doc(this.#db, code.USER, id);
-    } else {
-      return [code.ERROR, "Please provide id"];
-    }
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      return [code.SUCCESS, docSnap.data()];
-    } else {
-      return [code.EMPTY_DOC, {}];
-    }
-  }
-
-  async checkIfUserExists(id) {
-    const docRef = doc(this.#db, code.USER, id);
-    const docSnap = await getDoc(docRef);
-    return docSnap.exists();
-  }
-
-  async addUsers(name, username, password, ismaster) {
-    const id = username;
-    const dataObj = {
-      name: name,
-      username: username,
-      password: password,
-      ismaster: ismaster,
-    };
-    const isUserExist = await this.checkIfUserExists(id);
-    if (isUserExist) {
-      return [code.USER_EXISTS, id];
-    } else {
-      try {
-        const docRef = doc(this.#db, code.USER, id);
-        await setDoc(docRef, dataObj);
-        return [code.SUCCESS, id];
-      } catch (e) {
-        return [code.ERROR, e.message];
+    try {
+      let docRef;
+      if (id) {
+        docRef = doc(this.#db, code.USER, id);
+      } else {
+        return [code.ERROR, "Please provide id"];
       }
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        return [code.SUCCESS, docSnap.data()];
+      } else {
+        return [code.EMPTY_DOC, {}];
+      }
+    } catch (e) {
+      return [code.NO_INTERNET_CONNECTIONS, e.message];
     }
   }
 
+  /**
+   *
+   * checkIfUserExists
+   *
+   * * If the id is present in the document users then it returns true
+   * * else false
+   *
+   * @param {String} id
+   * @returns true or false or status code
+   */
+  async checkIfUserExists(id) {
+    try {
+      const docRef = doc(this.#db, code.USER, id);
+      const docSnap = await getDoc(docRef);
+      return docSnap.exists();
+    } catch (e) {
+      throw code.NO_INTERNET_CONNECTIONS;
+    }
+  }
+
+  /**
+   *
+   * addUsers
+   *
+   * * It adds the given user information to the document user with the id username
+   * * If the user already exists it returns the status code and the id
+   * * else it adds to the document and returns the success status code
+   *
+   *
+   * @param {String} name
+   * @param {String} username
+   * @param {String} password
+   * @param {boolean} ismaster
+   * @returns {Array} [statusCode, data]
+   */
+  async addUsers(name, username, password, ismaster) {
+    try {
+      const id = username;
+      const dataObj = {
+        name: name,
+        username: username,
+        password: password,
+        ismaster: ismaster,
+      };
+      const isUserExist = await this.checkIfUserExists(id);
+      if (isUserExist) {
+        return [code.USER_EXISTS, id];
+      } else {
+        try {
+          const docRef = doc(this.#db, code.USER, id);
+          await setDoc(docRef, dataObj);
+          return [code.SUCCESS, id];
+        } catch (e) {
+          return [code.ERROR, e.message];
+        }
+      }
+    } catch (e) {
+      return [code.NO_INTERNET_CONNECTIONS, e.message];
+    }
+  }
+
+  /**
+   *
+   * addTasks
+   *
+   * * It adds the task provided by the master to the list of students
+   * * Uses batch wise writing
+   *
+   * @param {String} master
+   * @param {Array} student
+   * @param {Number} lop
+   * @param {String} ops
+   * @param {Number} rop
+   * @param {Number} ans
+   * @returns {Array} [statusCode, data]
+   */
   async addTasks(master, student, lop, ops, rop, ans) {
-    let count = 0;
+    const batch = writeBatch(this.#db);
     for (let s of student) {
       const taskObj = {
         master: master,
@@ -132,32 +220,51 @@ class FireStoreDb {
         rop: rop,
         ans: ans,
       };
-      try {
-        const taskRef = collection(this.#db, code.TASKS);
-        await addDoc(taskRef, taskObj);
-        count++;
-      } catch (e) {
-        return [code.ERROR, e.message];
-      }
+      const taskRef = doc(collection(this.#db, code.TASKS));
+      batch.set(taskRef, taskObj);
     }
-    if (count === student.length) {
+    try {
+      await batch.commit();
       return [code.SUCCESS, code.SUCCESS];
-    } else {
-      return [code.ERROR, "There was some error adding tasks"];
+    } catch (e) {
+      return [code.ERROR, e.message];
+    }
+  }
+  /**
+   *
+   * getTasks
+   *
+   * * Get the tasks from the document tasks with the field and value
+   *
+   *
+   * @param {String} field The field is the field we need to filter the collection
+   * @param {String} value The value is the value of the field
+   * @returns {Array} taskArr
+   */
+  async getTasks(field, value) {
+    try {
+      const taskRef = collection(this.#db, code.TASKS);
+      const taskQuery = query(taskRef, where(field, "==", value));
+      const taskSnap = await getDocs(taskQuery);
+      let taskArr = [];
+      taskSnap.forEach((e) => {
+        taskArr.push({ id: e.id, ...e.data() });
+      });
+      return taskArr;
+    } catch (e) {
+      return code.NO_INTERNET_CONNECTIONS;
     }
   }
 
-  async getTasks(field, value) {
-    const taskRef = collection(this.#db, code.TASKS);
-    const taskQuery = query(taskRef, where(field, "==", value));
-    const taskSnap = await getDocs(taskQuery);
-    let taskArr = [];
-    taskSnap.forEach((e) => {
-      taskArr.push({ id: e.id, ...e.data() });
-    });
-    return taskArr;
-  }
-
+  /**
+   *
+   * deleteTask
+   *
+   * * Deletes the collection task with the id if it exists
+   *
+   * @param {String} id
+   * @returns {Array} [statusCode, msg]
+   */
   async deleteTask(id) {
     const taskRef = doc(this.#db, code.TASKS, id);
     try {
@@ -168,6 +275,19 @@ class FireStoreDb {
     }
   }
 
+  /**
+   *
+   * updateTask
+   *
+   * * It allows to update a particular task by a student
+   * * Updatable fields are lop, rop, ans
+   *
+   * @param {String} id
+   * @param {Number} lop
+   * @param {Number} rop
+   * @param {Number} ans
+   * @returns {Array} [statusCode, msg]
+   */
   async updateTask(id, lop, rop, ans) {
     const updatedObj = {
       lop: lop,
@@ -183,8 +303,9 @@ class FireStoreDb {
     }
   }
 }
-
+/**
+ * * Singleton Object for the FireStoreDb
+ */
 const db = new FireStoreDb();
 Object.freeze(db);
-
 export default db;
