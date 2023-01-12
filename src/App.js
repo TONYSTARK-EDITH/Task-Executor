@@ -35,7 +35,9 @@ const App = () => {
         }, 1000);
       });
     } else {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
     }
   }, [isLoggedIn, isMaster]);
 
