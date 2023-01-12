@@ -21,15 +21,15 @@ class TaskExecutor {
       9: "nine",
     };
     this.mathOps = {
-      "+": "add",
-      "-": "subtract",
-      "*": "multiply",
+      "+": "plus",
+      "-": "minus",
+      "*": "times",
       "/": "dividedBy",
     };
     this.opsMath = {
-      add: "+",
-      subtract: "-",
-      multiply: "*",
+      plus: "+",
+      minus: "-",
+      times: "*",
       dividedBy: "/",
     };
     this.#generateFunction();
