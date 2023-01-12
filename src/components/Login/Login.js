@@ -13,7 +13,12 @@ const Login = (props) => {
 
   const login = (e) => {
     e.preventDefault();
-    props.onLogin(userName, passWord);
+    props.onLogin(userName, passWord).then((resp) => {
+      if (resp) {
+        setUserName("");
+        setPassWord("");
+      }
+    });
   };
 
   const userNameChangeHandler = (e) => {

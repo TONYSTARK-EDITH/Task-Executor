@@ -33,7 +33,14 @@ const Register = (props) => {
 
   const register = (e) => {
     e.preventDefault();
-    props.onRegister(name, userName, passWord, isMaster);
+    props.onRegister(name, userName, passWord, isMaster).then((resp) => {
+      if (resp) {
+        setUserName("");
+        setPassWord("");
+        setName("");
+        setIsMaster(false);
+      }
+    });
   };
 
   const onRegisterProps = {

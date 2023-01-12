@@ -21,12 +21,18 @@ const App = () => {
 
   useEffect(() => {
     if (localStorage.getItem(code.LOGGED_IN) === "1") {
-      setIsLoggedIn(true);
-      setName(localStorage.getItem(code.NAME));
-      setEmail(localStorage.getItem(code.EMAIL));
-      if (localStorage.getItem(code.MASTER) === "1") {
-        setIsMaster(true);
-      }
+      db.checkIfUserExists(localStorage.getItem(code.EMAIL)).then((resp) => {
+        if (resp) {
+          setIsLoggedIn(true);
+          setName(localStorage.getItem(code.NAME));
+          setEmail(localStorage.getItem(code.EMAIL));
+          if (localStorage.getItem(code.MASTER) === "1") {
+            setIsMaster(true);
+          } else {
+            logout();
+          }
+        }
+      });
     }
   }, [isLoggedIn, isMaster]);
 
@@ -48,10 +54,12 @@ const App = () => {
           setIsMaster(true);
           localStorage.setItem(code.MASTER, "1");
         }
+        return true;
       } else {
         toast.error("Password is incorrect");
       }
     }
+    return false;
   };
 
   const register = async (name, userName, passWord, isMaster) => {
@@ -63,6 +71,7 @@ const App = () => {
     );
     if (statusCode === code.SUCCESS) {
       toast.success("User registered successfully");
+      return true;
     } else if (statusCode === code.USER_EXISTS) {
       toast.warn(`${userName} already exists`);
     } else if (statusCode === code.NO_INTERNET_CONNECTIONS) {
@@ -70,6 +79,7 @@ const App = () => {
     } else {
       toast.error(error);
     }
+    return false;
   };
 
   const logout = () => {
