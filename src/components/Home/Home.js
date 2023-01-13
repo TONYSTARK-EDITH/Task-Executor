@@ -23,29 +23,30 @@ const Home = (props) => {
   };
   const addNewTask = useCallback(
     async (studs, ops) => {
-      let studArr = [];
-      if (studs === "ALL") {
-        studArr.push(...students);
+      if (window.navigator.onLine) {
+        let studArr = [];
+        if (studs === "ALL") {
+          studArr.push(...students);
+        } else {
+          studArr.push(studs);
+        }
+        const [statusCode, msg] = await db.addTasks(
+          email,
+          studArr,
+          "",
+          taskExecutor.opsMath[ops],
+          "",
+          ""
+        );
+        if (statusCode === code.SUCCESS) {
+          toast.success("Tasks added");
+          deleteNewTask();
+        } else {
+          toast.error(msg);
+          deleteNewTask();
+        }
       } else {
-        studArr.push(studs);
-      }
-      const [statusCode, msg] = await db.addTasks(
-        email,
-        studArr,
-        "",
-        taskExecutor.opsMath[ops],
-        "",
-        ""
-      );
-      if (statusCode === code.SUCCESS) {
-        toast.success("Tasks added");
-        deleteNewTask();
-      } else if (statusCode === code.NO_INTERNET_CONNECTIONS) {
-        toast.error("No Internet Connections");
-        deleteNewTask();
-      } else {
-        toast.error(msg);
-        deleteNewTask();
+        toast.error("No Internet Connection");
       }
     },
     [email, students]
@@ -55,6 +56,11 @@ const Home = (props) => {
     if (newTask) {
       if (window.navigator.onLine) {
         const data = await db.getStudents("username");
+        const [statusCode, msg] = data;
+        if (statusCode === code.ERROR) {
+          toast.error(msg);
+          return;
+        }
         setStudents(data);
       } else {
         toast.error("No Internet Connection");
@@ -69,6 +75,11 @@ const Home = (props) => {
           isMaster ? code.MASTER : code.STUDENT,
           email
         );
+        const [statusCode, msg] = data;
+        if (statusCode === code.ERROR) {
+          toast.error(msg);
+          return;
+        }
         setTaskObjs(data);
       } else {
         toast.error("No Internet Connection");
@@ -83,9 +94,6 @@ const Home = (props) => {
         if (statusCode === code.SUCCESS) {
           toast.success("Task deleted successfully");
           retriveTask();
-        } else if (statusCode === code.NO_INTERNET_CONNECTIONS) {
-          toast.error("No Internet Connections");
-          return;
         } else {
           toast.error(msg);
         }

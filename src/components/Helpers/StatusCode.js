@@ -14,7 +14,6 @@
  * * USER_EXISTS
  * * SUCCESS
  * * ERROR
- * * NO_INTERNET_CONNECTIONS
  *
  */
 class StatusCode {
@@ -30,7 +29,6 @@ class StatusCode {
     this.USER_EXISTS = 1;
     this.SUCCESS = 0;
     this.ERROR = -1;
-    this.NO_INTERNET_CONNECTIONS = -2;
   }
 }
 

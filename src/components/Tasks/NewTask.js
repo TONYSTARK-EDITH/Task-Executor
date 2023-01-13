@@ -57,7 +57,7 @@ const NewTask = (props) => {
               <Button className={classes.task__cancel__btn} attr={cancelProps}>
                 Cancel
               </Button>
-              <Button  attr={assignProps}>Assign</Button>
+              <Button attr={assignProps}>Assign</Button>
             </FormField>
           </Form>
         </Card>,

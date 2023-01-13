@@ -10,6 +10,7 @@ import {
   deleteDoc,
   updateDoc,
   writeBatch,
+  orderBy,
 } from "firebase/firestore";
 import CryptoJS from "react-native-crypto-js";
 import { initializeApp } from "firebase/app";
@@ -94,7 +95,7 @@ class FireStoreDb {
       });
       return studArr;
     } catch (e) {
-      return code.NO_INTERNET_CONNECTIONS;
+      return [code.ERROR, e.message];
     }
   }
 
@@ -124,7 +125,7 @@ class FireStoreDb {
         return [code.EMPTY_DOC, {}];
       }
     } catch (e) {
-      return [code.NO_INTERNET_CONNECTIONS, e.message];
+      return [code.ERROR, e.message];
     }
   }
 
@@ -144,7 +145,7 @@ class FireStoreDb {
       const docSnap = await getDoc(docRef);
       return docSnap.exists();
     } catch (e) {
-      throw code.NO_INTERNET_CONNECTIONS;
+      throw e.message;
     }
   }
 
@@ -185,7 +186,7 @@ class FireStoreDb {
         }
       }
     } catch (e) {
-      return [code.NO_INTERNET_CONNECTIONS, e.message];
+      return [code.ERROR, e.message];
     }
   }
 
@@ -214,6 +215,7 @@ class FireStoreDb {
         ops: ops,
         rop: rop,
         ans: ans,
+        timeStamp: new Date(),
       };
       const taskRef = doc(collection(this.#db, code.TASKS));
       batch.set(taskRef, taskObj);
@@ -239,7 +241,11 @@ class FireStoreDb {
   async getTasks(field, value) {
     try {
       const taskRef = collection(this.#db, code.TASKS);
-      const taskQuery = query(taskRef, where(field, "==", value));
+      const taskQuery = query(
+        taskRef,
+        where(field, "==", value),
+        orderBy("timeStamp")
+      );
       const taskSnap = await getDocs(taskQuery);
       let taskArr = [];
       taskSnap.forEach((e) => {
@@ -247,7 +253,7 @@ class FireStoreDb {
       });
       return taskArr;
     } catch (e) {
-      return code.NO_INTERNET_CONNECTIONS;
+      return [code.ERROR, e.message];
     }
   }
 
