@@ -20,7 +20,7 @@ const TaskObjects = (props) => {
     setA(props.a);
     setB(props.b);
     setC(props.ans);
-  }, [props.a, props.b, props.ans]);
+  }, [props.a, props.ans, props.b]);
 
   const expandChangeHandler = () => {
     setIsExpanded((prev) => {

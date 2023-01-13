@@ -70,6 +70,7 @@ const Home = (props) => {
   const retriveTask = useCallback(async () => {
     if (!newTask) {
       if (window.navigator.onLine) {
+        if (!isMaster) setTaskObjs([]);
         const data = await db.getTasks(
           isMaster ? code.MASTER : code.STUDENT,
           email
