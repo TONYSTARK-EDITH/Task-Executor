@@ -5,6 +5,8 @@ import Input from "../UI/Input/Input";
 import classes from "./TaskObjects.module.css";
 import { BiChevronsDown, BiChevronsUp } from "react-icons/bi";
 import { RiDeleteBin2Fill } from "react-icons/ri";
+import { FaCalculator } from "react-icons/fa";
+
 import Button from "../UI/Button/Button";
 import taskExecutor from "../Helpers/TaskExecutor";
 const TaskObjects = (props) => {
@@ -60,6 +62,7 @@ const TaskObjects = (props) => {
   };
 
   const calcProps = {
+    className: classes.task__obj__del,
     type: "submit",
   };
 
@@ -145,7 +148,7 @@ const TaskObjects = (props) => {
               }
               attr={calcProps}
             >
-              Calculate
+              <FaCalculator></FaCalculator>
             </Button>
           </FormField>
         </Form>

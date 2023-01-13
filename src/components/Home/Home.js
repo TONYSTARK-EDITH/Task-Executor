@@ -10,7 +10,6 @@ import taskExecutor from "../Helpers/TaskExecutor";
 import { toast } from "react-toastify";
 import code from "../Helpers/StatusCode";
 import { FiRefreshCw } from "react-icons/fi";
-
 const Home = (props) => {
   const [newTask, setNewTask] = useState(false);
   const [students, setStudents] = useState([]);
