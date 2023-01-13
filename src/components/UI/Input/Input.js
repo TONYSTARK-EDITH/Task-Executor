@@ -26,7 +26,7 @@ const Input = (props) => {
             props.className ? " " + props.className : ""
           }`}
           id={props.id}
-          value={props.value}
+          checked={props.value}
           onChange={props.onChange}
           placeholder={props.placeholder}
           min={props.min}
